@@ -9,31 +9,31 @@ integer, parameter :: maxneigh=100
 double precision :: rcut, rcut_sq, Sep_2 
 
 !!!!!!!!!!!!!!DCD INPUT!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!! 
-character*4              :: car4
-character*80             :: car(10)
-integer                  :: nstart, nsanc, nset, ntitle, count
-integer                  :: charm, namin, i5(5), i9(9)
-real*4                   :: DD
-logical                  :: dcd_has_cell
-real*8                   :: cell(6)
-integer	                 :: nat, iostat
+character*4  :: car4
+character*80 :: car(10)
+integer :: nstart, nsanc, nset, ntitle, count
+integer :: charm, namin, i5(5), i9(9)
+real*4  :: DD
+logical :: dcd_has_cell
+real*8  :: cell(6)
+integer	:: nat, iostat
 !!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!! 
 
-integer			 			:: nof,cart, Phase, Nl
-integer			 			:: ii, m, i, j, k
-integer, allocatable     	:: list_pos(:), neigh(:)
+integer	:: nof,cart, Phase, Nl
+integer	:: ii, m, i, j, k
+integer, allocatable :: list_pos(:), neigh(:)
 double precision, parameter :: pi=4.0d0*datan(1.0d0), Na=6.02214129*10**23d0  
-real*4, allocatable      	:: x(:), y(:), z(:)
-real*8, allocatable	 		:: pos(:,:), q_3Tot(:), S_ij(:), S_i(:), S_j(:), q_3TotAv(:)
-real*8			 			:: la, lz, y3, y2, y1, y0, y2_pos, NormM 
-real*8			 			:: ThickNorm, dist_x, dist_y, dist_z
-real*8			 			:: R, y1zxy, delta_thick, r3
-real*8			 			:: P_0, P_1, P_2, P_3, P_m1, P_m2, P_m3, cos_theta, sin_theta, rho
-real			 			:: densityIce
-complex*16, allocatable  	:: q_m3(:), q_m2(:), q_m1(:), q_0(:), q_1(:), q_2(:), q_3(:) 
-complex*16, allocatable  	:: q_m3_mag(:), q_m2_mag(:), q_m1_mag(:), q_0_mag(:), q_1_mag(:), q_2_mag(:), q_3_mag(:)  
-complex*16, allocatable	 	:: q_m3Av(:), q_m2Av(:), q_m1Av(:), q_0Av(:), q_1Av(:), q_2Av(:), q_3Av(:)
-complex, parameter	 		:: imag=(0,-1) !!!!!
+real*4, allocatable  :: x(:), y(:), z(:)
+real*8, allocatable  :: pos(:,:), q_3Tot(:), S_ij(:), S_i(:), S_j(:), q_3TotAv(:)
+real*8	:: la, lz, y3, y2, y1, y0, y2_pos, NormM 
+real*8	:: ThickNorm, dist_x, dist_y, dist_z
+real*8	:: R, y1zxy, delta_thick, r3
+real*8	:: P_0, P_1, P_2, P_3, P_m1, P_m2, P_m3, cos_theta, sin_theta, rho
+real	:: densityIce
+complex*16, allocatable  :: q_m3(:), q_m2(:), q_m1(:), q_0(:), q_1(:), q_2(:), q_3(:) 
+complex*16, allocatable  :: q_m3_mag(:), q_m2_mag(:), q_m1_mag(:), q_0_mag(:), q_1_mag(:), q_2_mag(:), q_3_mag(:)  
+complex*16, allocatable	 :: q_m3Av(:), q_m2Av(:), q_m1Av(:), q_0Av(:), q_1Av(:), q_2Av(:), q_3Av(:)
+complex, parameter :: imag=(0,-1) !!!!!
 
 
 nargc=iargc()
@@ -50,12 +50,10 @@ else
    call getarg(3,buffer)
    read(buffer,*) cellname
    call getarg(4,buffer)
-   read(buffer,*) rcut
-   
+   read(buffer,*) rcut 
 endif
 
 rcut_sq=rcut**2.0d0
-
 
 !!!!!!!!!!!!!! READ IN DCD !!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!
 open (unit=999,file=trim(fname),form="unformatted") 
@@ -74,8 +72,6 @@ if (nof.eq.-1) nof=nset
 		stop
 	endif
 !!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!
-
-
 
 cart=3
 
@@ -113,7 +109,6 @@ else
    	stop        
 end if
 
-
 !!!!!!!!!!!!!! NORMALISE REAL SPHERICAL HARMONICS !!!!!!!!!!!!!!!!!!!
 y3=dsqrt(35./pi)/8.
 y2=dsqrt(105./(2.*pi))/4.
@@ -122,13 +117,11 @@ y0=dsqrt(7./pi)/4.
 
 NormM=4.*pi/7. ! 4pi/2l+1 l = 3 
 
-
 densityIce=0.9167						! g/cm3
 densityIce=densityIce*1E-21 			! g/cm3---> g/nm3
 densityIce=densityIce/18.01528     		! *mass h20 g/mol--->mol/nm3
 densityIce=densityIce*Na		 		! ---> nm-3
 ThickNorm=2*densityIce*la*cell(3)/10	! cell(3)--> nm
-
 
 
 !!!!!!!!!!!!!! OUTPUT FILES !!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!
@@ -163,7 +156,6 @@ do ii=1,nof
 	    if(iostat/=0) exit
    	endif
 
-
 	read(999,iostat=iostat)(x(m),m=1,nat) 
     if(iostat/=0) exit
     read(999,iostat=iostat)(y(m),m=1,nat)
@@ -174,7 +166,6 @@ do ii=1,nof
 	pos(:,1)=x
 	pos(:,2)=y
 	pos(:,3)=z
-
 
 	!!!!!!!!!!!!!! Nearest neighbours !!!!!!!!!!!!!
 	neigh(:)=0
@@ -208,7 +199,6 @@ do ii=1,nof
   		end do
 	end do
 
-
 	!!!!!!!!!!!!!! Calculate spherical harmonics for all neighbours !!!!!!!!!!!!!
 	do i=1,nat
 			
@@ -241,8 +231,7 @@ do ii=1,nof
 				else 
 					dist_z=cell(3)+dist_z
 				end if
-			endif  
-					
+			endif  				
 
 			Sep_2=dist_x**2 + dist_y**2 + dist_z**2
 			R=dsqrt(Sep_2)
@@ -268,9 +257,7 @@ do ii=1,nof
 			q_2(i)= y2*((dist_x+imag*dist_y)**2)*dist_z/r3 + q_2(i)
 			q_3(i)= ((-y3)*(dist_x +imag*dist_y)**3)/r3 + q_3(i)	
 
-
-		end do ! neighbours of atom i
-				
+		end do ! neighbours of atom i			
 					
 		q_m3(i)= q_m3(i)/neigh(i)
 		q_m2(i)= q_m2(i)/neigh(i)
@@ -289,7 +276,6 @@ do ii=1,nof
 	q_1Av(:)=q_1(:)
 	q_2Av(:)=q_2(:)
 	q_3Av(:)=q_3(:)
-
 
 	!!!!!!!!!!!!!! Now have q3m values for m=-3,3 for every O atom !!!!!!!!!!!!!!!!!!!!!!!!!!!!!
 
@@ -327,18 +313,15 @@ do ii=1,nof
 		q_1Av(i)=q_1Av(i)/(neigh(i)+1)
 		q_2Av(i)=q_2Av(i)/(neigh(i)+1)
 		q_3Av(i)=q_3Av(i)/(neigh(i)+1)
-
 	
 	end do
 
 	write(*,*), 'count', count
 
-
 	!!!!!!!!!!!!!! Calculate <q3m> and <q3> !!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!
 	!!!!!!!!!!!!!! Calculate QLL Thickness from q3 threshold !!!!!!!!!!!!!!!!!!!!!!!
 	do i=1,nat
-			
-			
+				
 		q_3Tot(i)= dsqrt((abs(q_m3(i))**2 + abs(q_m2(i))**2 + abs(q_m1(i))**2 + abs(q_0(i))**2 &
 			& + abs(q_1(i))**2 + abs(q_2(i))**2 + abs(q_3(i))**2)*NormM)
 			
@@ -352,12 +335,11 @@ do ii=1,nof
 
 		write(19,*)ii,pos(i,1),pos(i,2),pos(i,3),q_3Tot(i) ,q_3TotAv(i)	!,q_m2(i),q_m1(i),q_0(i)!,q_1(i),q_2(i),q_3(i) !S_ij(i) !!ii is timestep. File with q3 and coords for each timestep
 	end do
-
 		
 	delta_thick=(Nl/ThickNorm)*10 !QLL thickness at timestep ii in Angstrom 
 	write(22,'(i8,1f10.4)')ii,delta_thick   ! timestep QLL thickness in Angstrom
 		
-end do !frames
+end do ! frames
 
 end program q3code
 
