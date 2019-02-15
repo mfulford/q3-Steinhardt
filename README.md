@@ -25,10 +25,10 @@ e.g
 .`q346.x90 Trajectory_ice.dcd cell_ice.dat 3.5
 ```
 
-where cell_ice.dat contains cell dimensions in Angstroms
+where cell_ice.dat contains xyz cell dimensions in Angstroms
 
 ```shell
-cat cell_ice.dat
+$ cat cell_ice.dat
 44.33853912,76.00162125,43.67976761
 ```
 
